@@ -33,31 +33,4 @@ public class JedisUtilTest {
         }
     }
 
-    public static void main(String[] args) {
-        for(int i = 1; i <= 10; i ++){
-            Thread thread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    String id = IdUtil.uuid();
-                    Long timeout = 1L;
-                    try {
-                        boolean isLock = JedisUtil.lock(id, timeout);
-                        if(isLock){
-                            System.out.printf("%s get lock success%n", Thread.currentThread().getName());
-                            Thread.sleep(1000);
-                        } else {
-                            System.out.printf("%s get lock failure%n", Thread.currentThread().getName());
-                        }
-                    } catch (InterruptedException e) {
-                        JedisUtil.unlock(id);
-                    } finally {
-                        JedisUtil.unlock(id);
-                    }
-                }
-            });
-            thread.setName(String.format("thread-%d", i));
-            thread.start();
-        }
-    }
-
 }
